@@ -16,6 +16,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   res.json({message: 'voici le retour de notre application express...'})
+  parseInt()
 });
 
 app.use((req, res) => {
