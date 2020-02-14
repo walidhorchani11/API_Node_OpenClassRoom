@@ -21,6 +21,11 @@ app.use((req, res, next) => {
 //use body parser pour avoir body de la demande (requete)
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  console.log('requete recus ...');
+  next();
+});
+
 
 app.post('/api/stuff', (req, res, next) => {
   delete req.body._id;
@@ -51,24 +56,10 @@ app.get('/api/stuff', (req, res, next) => {
   Thing.find().then(things => {res.status(200).json(things)}).catch(error => {res.status(400).json({error})})
 });
 
-//middleware
-app.use((req, res, next) => {
-  console.log('requete recus ...');
-  next();
-});
-
-app.use((req, res, next) => {
-  res.status(201);
-  next();
-})
-
-
-app.use((req, res, next) => {
-  res.json({message: 'voici le retour de notre application express...'})
-});
-
-app.use((req, res) => {
-  console.log('reponse retourné ....');
+app.delete('/api/stuff/:id',(req, res, next) => {
+  Thing.deleteOne({_id: req.params.id})
+    .then(() => {res.status(200).json({message: 'deleted succes !'})})
+    .catch(error => {res.status(400).json(error)});
 })
 
 module.exports = app;
