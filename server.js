@@ -1,6 +1,11 @@
 const http = require('http');
 const app = require('./app');
 
+app.get('/', (req, res, next) => {
+    console.log('hello works with chrome');
+    next();
+});
+
 const normalizePort = val => {
     const port = parseInt(val, 10);
 
