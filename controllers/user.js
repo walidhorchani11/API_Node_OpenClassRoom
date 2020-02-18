@@ -17,5 +17,25 @@ exports.signup = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
-  res.json({message: 'login logic'})
+  User.findOne({email: req.body.email})
+    .then(user => {
+      if(!user){
+        return res.status(401).json({error: 'user not found !'})
+      }
+      //si user exist, on campare le mdp entree avec lenregistre au bdd
+      bcrypt.compare(req.body.password, user.password)
+        .then(valid => {
+          if(!valid){
+            return res.status(401).json({error: 'mot de passe incorrect !'})
+          }
+          res.status(200).json({
+            userId: user._id,
+            token: 'TOKEN'
+          })
+        })
+        //error au niveau du package pour la comparaison 
+        .catch(error => res.status(500).json({error}))
+    })
+    //si il ya error pas dans le cas ou le user nexiste pasc tres au niveau de then
+    .catch(error => res.status(500).json({error}));
 };
