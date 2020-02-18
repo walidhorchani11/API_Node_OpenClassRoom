@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const stuffRoutes =  require('./routes/stuff');
+const authRoutes = require('./routes/user');
 
 const app = express();
 mongoose.connect('mongodb+srv://walidhorchani:ran08742242@cluster0-mqctn.mongodb.net/test?retryWrites=true&w=majority',{ useNewUrlParser: true,
@@ -19,6 +20,10 @@ app.use((req, res, next) => {
 
 //use body parser pour avoir body de la demande (requete)
 app.use(bodyParser.json());
+
+
+app.use('/api/auth', authRoutes);
+
 
 //on va enregistrer notre routeur pour toutes les demandes effectuees vers /api/stuff
 app.use('/api/stuff', stuffRoutes);
