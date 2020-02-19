@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+//impoter jsowebtoken pour creer un token lors du login 
+const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
@@ -30,7 +32,11 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user._id,
-            token: 'TOKEN'
+            token: jwt.sign(
+              {userId: user._id},
+              'WalidHorchani_Token_secret_string',
+              {expiresIn: '24h'}
+            )
           })
         })
         //error au niveau du package pour la comparaison 
