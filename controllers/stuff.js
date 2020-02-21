@@ -2,10 +2,12 @@ const Thing = require('../models/thing');
 
 
 exports.creatThing = (req, res, next) => {
-  delete req.body._id;
-  console.log(req.body);
+  const thingObject = JSON.parse(req.body.thing);
+  delete thingObject._id;
   const thing = new Thing({
-    ...req.body
+    ...thingObject,
+    //url dinamyqy selon le serveur 
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   });
   //ou bien on peut faire comme ça et sans delete of _id
   // const thing = new Thing({
