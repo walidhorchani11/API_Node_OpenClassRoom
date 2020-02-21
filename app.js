@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const stuffRoutes =  require('./routes/stuff');
 const authRoutes = require('./routes/user');
+const path = require('path');
 
 const app = express();
 mongoose.connect('mongodb+srv://walidhorchani:ran08742242@cluster0-mqctn.mongodb.net/test?retryWrites=true&w=majority',{ useNewUrlParser: true,
@@ -21,6 +22,8 @@ app.use((req, res, next) => {
 //use body parser pour avoir body de la demande (requete)
 app.use(bodyParser.json());
 
+
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use('/api/auth', authRoutes);
 
