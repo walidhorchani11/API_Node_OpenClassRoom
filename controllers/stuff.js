@@ -36,6 +36,14 @@ exports.deleteThing = (req, res, next) => {
 
 exports.updateThing = (req, res, next) => {
   //ou bien au lieu de ...req.body on peut creer un new object 
+
+    //test si file exist on met a jour le imageUrl
+  const thingObj = req.file ? 
+  {
+    ...JSON.parse(req.body.thing),
+    imageUrl : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  } : { ...req.body};
+
   Thing.updateOne({_id: req.params.id}, { ...req.body, _id: req.params.id} )
     .then(() =>  res.status(200).json({message: 'Thing updated successfully'}))
     .catch(error => res.status(400).json({error}));
